@@ -389,16 +389,17 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
         NSIndexPath *firstIndexPath = [self indexPathForDate:self.selectedFromDate];
         NSIndexPath *lastIndexPath = [self indexPathForDate:self.selectedToDate];
         
+        _selectedFromDate = nil;
+        _selectedToDate = nil;
+        
         [self enumerateThroughCellsBetweenIndexPath:firstIndexPath lastIndexPath:lastIndexPath withBlock:^(NSIndexPath *indexPath) {
             
             [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
             
-            UICollectionViewCell *previousSelectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            RSDFDatePickerDayCell *previousSelectedCell = (RSDFDatePickerDayCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            [self updateRangeStatusOfCell:previousSelectedCell withDate:[self dateFromPickerDate:previousSelectedCell.date]];
             [previousSelectedCell setNeedsDisplay];
         }];
-        
-        _selectedFromDate = nil;
-        _selectedToDate = nil;
     }
     
     if (self.selectedFromDate == nil) {
@@ -407,9 +408,14 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
         NSIndexPath *indexPathForSelectedDate = [self indexPathForDate:date];
         [self.collectionView selectItemAtIndexPath:indexPathForSelectedDate animated:YES scrollPosition:UICollectionViewScrollPositionNone];
     } else {
+        // Do nothing if selected date is the same with from date
+        if ([date compare:self.selectedFromDate] == NSOrderedSame) {
+            return;
+        }
+        
         // Rearrange first an second date so that they are in ascending order
-        if ([date compare:_selectedFromDate] == NSOrderedAscending) {
-            _selectedToDate = _selectedFromDate;
+        if ([date compare:self.selectedFromDate] == NSOrderedAscending) {
+            _selectedToDate = self.selectedFromDate;
             _selectedFromDate = date;
         } else {
             _selectedToDate = date;
@@ -937,10 +943,14 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
         RSDFDatePickerDayCell *cell = ((RSDFDatePickerDayCell *)[self.collectionView cellForItemAtIndexPath:indexPath]);
         NSDate *date = cell ? [self dateFromPickerDate:cell.date] : nil;
         
-        [self selectedDateRange:date];
-        
-        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectFromDate:toDate:)]) {
-            [self.delegate datePickerView:self didSelectFromDate:self.selectedFromDate toDate:self.selectedToDate];
+        if (self.selectedFromDate && [self.selectedFromDate compare:date] == NSOrderedSame) {
+            // Do nothing if the only selected item is from date and user taps it again.
+        } else {
+            [self selectedDateRange:date];
+            
+            if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectFromDate:toDate:)]) {
+                [self.delegate datePickerView:self didSelectFromDate:self.selectedFromDate toDate:self.selectedToDate];
+            }
         }
     }
 }
