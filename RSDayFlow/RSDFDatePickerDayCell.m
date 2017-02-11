@@ -428,6 +428,13 @@ CGFloat roundOnBase(CGFloat x, CGFloat base) {
 
 - (UIColor *)selectedDayImageColor
 {
+    if (self.isStartOfSelectedRange) {
+        return [UIColor colorWithRed:92/255.0f green:255/255.0f blue:27/255.0f alpha:1.0f];
+    } else if (self.isEndOfSelectedRange) {
+        return [UIColor colorWithRed:27/255.0f green:40/255.0f blue:255/255.0f alpha:1.0f];
+    } else if (self.isInSelectedRange) {
+        return [UIColor colorWithRed:255/255.0f green:246/255.0f blue:27/255.0f alpha:1.0f];
+    }
     return [UIColor colorWithRed:255/255.0f green:59/255.0f blue:48/255.0f alpha:1.0f];
 }
 

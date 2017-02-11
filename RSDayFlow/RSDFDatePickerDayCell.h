@@ -84,6 +84,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, getter = isOutOfRange) BOOL outOfRange;
 
 /**
+ DESCRIPTION_REQUIRED
+ */
+@property (nonatomic, getter = isStartOfSelectedRange) BOOL startOfSelectedRange;
+
+/**
+ DESCRIPTION_REQUIRED
+ */
+@property (nonatomic, getter = isInSelectedRange) BOOL inSelectedRange;
+
+/**
+ DESCRIPTION_REQUIRED
+ */
+@property (nonatomic, getter = isEndOfSelectedRange) BOOL endOfSelectedRange;
+
+/**
  The color of the default mark image for the cell of the day. Default value is [UIColor colorWithRed:184/255.0f green:184/255.0f blue:184/255.0f alpha:1.0f].
  
  @discussion Will be used to create the mark image if `markImage` is equal to `nil`.

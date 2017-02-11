@@ -30,6 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol RSDFDatePickerViewDelegate;
 @protocol RSDFDatePickerViewDataSource;
 
+typedef NS_ENUM(NSUInteger, RSDFSelectionMode) {
+    /// Allows selecting a single date
+    RSDFSelectionModeSingle,
+    /// Allows selecting a date range
+    RSDFSelectionModeRange
+};
+
 /**
  The `RSDFDatePickerView` is a calendar view with infinity scrolling.
  */
@@ -54,6 +61,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithFrame:(CGRect)frame calendar:(nullable NSCalendar *)calendar startDate:(nullable NSDate *)startDate endDate:(nullable NSDate *)endDate;
 
+///-----------------------------------
+/// @name Accessing the selected dates
+///-----------------------------------
+
+/*
+ Currently selected date(s).
+ 
+ @discussion If the `selectionMode` is `RSDFSelectionModeSingle`, `selectedDate` will hold the currently selected date. Otherwise, `selectedFromDate` and `selectedToDate` will hold the selected range.
+ */
+@property (nonatomic, readonly, strong, nullable) NSDate *selectedDate;
+@property (nonatomic, readonly, strong, nullable) NSDate *selectedFromDate;
+@property (nonatomic, readonly, strong, nullable) NSDate *selectedToDate;
+
 ///-----------------------------
 /// @name Accessing the Delegate
 ///-----------------------------
@@ -76,6 +96,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (nonatomic, readwrite, weak, nullable) id<RSDFDatePickerViewDataSource> dataSource;
+
+/// --------------------
+/// @name Selection Mode
+/// --------------------
+
+/**
+ If `RSDFSelectionModeSingle` only allows a single date to be selected.
+ If `RSDFSelectionModeRange` allows selecting a range (a start date and an end date).
+ 
+ @discussion Default value is `RSDFSelectionModeSingle`
+ */
+@property (nonatomic, readwrite, assign) RSDFSelectionMode selectionMode;
 
 ///------------------
 /// @name Paging Mode
@@ -123,6 +155,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (void)selectDate:(nullable NSDate *)date;
+
+/**
+ Selects the given dates as a range.
+ 
+ If there is an existing selection of a different date, calling this method replaces the previous selection.
+ 
+ This method does not cause any selection-related delegate methods to be called.
+ 
+ @param fromDate The date the range starts
+ @param toDate The date the range ends
+ */
+- (void)selectFromDate:(nullable NSDate *)fromDate toDate:(nullable NSDate *)toDate;
 
 ///-------------------------
 /// @name Reloading the Data
@@ -233,7 +277,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)datePickerView:(RSDFDatePickerView *)view shouldSelectDate:(NSDate *)date;
 
 /**
- Tells the delegate that the user did select a date.
+ Tells the delegate that the user did select a date in RSDFSelectionModeSingle.
  
  The date picker view calls this method when the user successfully selects a date in the date picker view.
  It does not call this method when you programmatically set the selection.
@@ -242,6 +286,18 @@ NS_ASSUME_NONNULL_BEGIN
  @param date The selected date.
  */
 - (void)datePickerView:(RSDFDatePickerView *)view didSelectDate:(NSDate *)date;
+
+/**
+ Tells the delegate that the user did select a date in RSDFSelectionModeRange.
+ 
+ The date picker view calls this method when the user successfully selects a date in the date picker view.
+ It does not call this method when you programmatically set the selection.
+ 
+ @param view The view whose date was selected.
+ @param fromDate The selected start date for range.
+ @param toDate The selected end date for range.
+ */
+- (void)datePickerView:(RSDFDatePickerView *)view didSelectFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
 @end
 
