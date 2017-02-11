@@ -368,10 +368,6 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
                 [selectedCell setNeedsDisplay];
             }
         }
-        
-        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectDate:)]) {
-            [self.delegate datePickerView:self didSelectDate:date];
-        }
     }
 }
 
@@ -410,10 +406,6 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
         
         NSIndexPath *indexPathForSelectedDate = [self indexPathForDate:date];
         [self.collectionView selectItemAtIndexPath:indexPathForSelectedDate animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-        
-        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectDate:)]) {
-            [self.delegate datePickerView:self didSelectDate:date];
-        }
     } else {
         // Rearrange first an second date so that they are in ascending order
         if ([date compare:_selectedFromDate] == NSOrderedAscending) {
@@ -421,10 +413,6 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
             _selectedFromDate = date;
         } else {
             _selectedToDate = date;
-        }
-        
-        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectDate:)]) {
-            [self.delegate datePickerView:self didSelectDate:date];
         }
         
         NSIndexPath *firstIndexPath = [self indexPathForDate:self.selectedFromDate];
@@ -438,10 +426,6 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
             [self updateRangeStatusOfCell:selectedCell withDate:[self dateFromPickerDate:selectedCell.date]];
             [selectedCell setNeedsDisplay];
         }];
-        
-        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectFromDate:toDate:)]) {
-            [self.delegate datePickerView:self didSelectFromDate:self.selectedFromDate toDate:self.selectedToDate];
-        }
     }
 }
 
@@ -932,19 +916,32 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
     
     if (self.selectionMode == RSDFSelectionModeSingle) {
         [self selectDate:date];
+        
+        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectDate:)]) {
+            [self.delegate datePickerView:self didSelectDate:date];
+        }
     }
     else {
         [self selectedDateRange:date];
+        
+        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectFromDate:toDate:)]) {
+            [self.delegate datePickerView:self didSelectFromDate:self.selectedFromDate toDate:self.selectedToDate];
+        }
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     // If selection mode is range, instead of deselecting a date between range, start a new date range selection.
     if (self.selectionMode == RSDFSelectionModeRange) {
         RSDFDatePickerDayCell *cell = ((RSDFDatePickerDayCell *)[self.collectionView cellForItemAtIndexPath:indexPath]);
         NSDate *date = cell ? [self dateFromPickerDate:cell.date] : nil;
         
         [self selectedDateRange:date];
+        
+        if ([self.delegate respondsToSelector:@selector(datePickerView:didSelectFromDate:toDate:)]) {
+            [self.delegate datePickerView:self didSelectFromDate:self.selectedFromDate toDate:self.selectedToDate];
+        }
     }
 }
 
