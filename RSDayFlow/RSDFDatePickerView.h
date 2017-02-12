@@ -297,7 +297,7 @@ typedef NS_ENUM(NSUInteger, RSDFSelectionMode) {
  @param fromDate The selected start date for range.
  @param toDate The selected end date for range.
  */
-- (void)datePickerView:(RSDFDatePickerView *)view didSelectFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+- (void)datePickerView:(RSDFDatePickerView *)view didSelectFromDate:(nullable NSDate *)fromDate toDate:(nullable NSDate *)toDate;
 
 @end
 
