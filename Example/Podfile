@@ -1,0 +1,3 @@
+target 'RSDayFlowExample' do
+	pod 'RSDayFlow', :path => '../'
+end
