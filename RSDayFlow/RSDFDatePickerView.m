@@ -153,8 +153,13 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
         _collectionView = [[[self collectionViewClass] alloc] initWithFrame:[self collectionViewFrame] collectionViewLayout:self.collectionViewLayout];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        [_collectionView registerClass:[self monthHeaderClass] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:RSDFDatePickerViewMonthHeaderIdentifier];
-        [_collectionView registerClass:[self dayCellClass] forCellWithReuseIdentifier:RSDFDatePickerViewDayCellIdentifier];
+        [_collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([RSDFDatePickerMonthHeader class])
+                                                    bundle:[NSBundle bundleForClass:[RSDFDatePickerView class]]]
+          forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                 withReuseIdentifier:RSDFDatePickerViewMonthHeaderIdentifier];
+        [_collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([RSDFDatePickerDayCell class])
+                                                    bundle:[NSBundle bundleForClass:[RSDFDatePickerView class]]]
+          forCellWithReuseIdentifier:RSDFDatePickerViewDayCellIdentifier];
         [_collectionView reloadData];
         [_collectionView layoutIfNeeded];
         [self scrollToToday:NO];
@@ -802,10 +807,8 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
             cell.marked = [self.dataSource datePickerView:self shouldMarkDate:cellDate];
             
             if (cell.marked) {
-                if ([self.dataSource respondsToSelector:@selector(datePickerView:markImageForDate:)]) {
-                    cell.markImage = [self.dataSource datePickerView:self markImageForDate:cellDate];
-                } else if ([self.dataSource respondsToSelector:@selector(datePickerView:markImageColorForDate:)]) {
-                    cell.markImageColor = [self.dataSource datePickerView:self markImageColorForDate:cellDate];
+                if ([self.dataSource respondsToSelector:@selector(datePickerView:markColorForDate:)]) {
+                    cell.markColor = [self.dataSource datePickerView:self markColorForDate:cellDate];
                 }
             }
         }

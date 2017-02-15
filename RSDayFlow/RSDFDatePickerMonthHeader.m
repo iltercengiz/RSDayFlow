@@ -25,9 +25,14 @@
 
 #import "RSDFDatePickerMonthHeader.h"
 
-@implementation RSDFDatePickerMonthHeader
+@interface RSDFDatePickerMonthHeader ()
 
-@synthesize dateLabel = _dateLabel;
+@property (weak, nonatomic, readwrite) IBOutlet UILabel *dateLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConstraint;
+
+@end
+
+@implementation RSDFDatePickerMonthHeader
 
 #pragma mark - Lifecycle
 
@@ -52,24 +57,12 @@
 - (void)commonInitializer
 {
     self.backgroundColor = [self selfBackgroundColor];
+    self.dateLabel.font = [self monthLabelFont];
+    self.dateLabel.textAlignment = NSTextAlignmentCenter;
+    self.separatorHeightConstraint.constant = 1.0 / [UIScreen mainScreen].scale;
 }
 
 #pragma mark - Custom Accessors
-
-- (UILabel *)dateLabel
-{
-	if (!_dateLabel) {
-        CGRect frame = UIEdgeInsetsInsetRect(self.bounds, self.selfEdgeInsets);
-        _dateLabel = [[UILabel alloc] initWithFrame:frame];
-        _dateLabel.backgroundColor = [UIColor clearColor];
-        _dateLabel.opaque = NO;
-		_dateLabel.textAlignment = NSTextAlignmentCenter;
-		_dateLabel.font = [self monthLabelFont];
-		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[self addSubview:_dateLabel];
-	}
-	return _dateLabel;
-}
 
 - (void)setDate:(RSDFDatePickerDate)date
 {
@@ -98,11 +91,6 @@
 - (UIColor *)selfBackgroundColor
 {
     return [UIColor clearColor];
-}
-
-- (UIEdgeInsets)selfEdgeInsets
-{
-    return UIEdgeInsetsZero;
 }
 
 #pragma mark - Attributes of Subviews

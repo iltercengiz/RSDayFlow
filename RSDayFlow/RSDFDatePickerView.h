@@ -330,16 +330,7 @@ typedef NS_ENUM(NSUInteger, RSDFSelectionMode) {
  
  @discussion Will be ignored if the method `datePickerView:markImageForDate:` is implemented.
  */
-- (UIColor *)datePickerView:(RSDFDatePickerView *)view markImageColorForDate:(NSDate *)date;
-
-/**
- Asks the data source about the mark image for the specified date.
- 
- @param view The date picker view object that is asking about the mark image for the specified date.
- 
- @return The mark image for the specified date.
- */
-- (nullable UIImage *)datePickerView:(RSDFDatePickerView *)view markImageForDate:(NSDate *)date;
+- (UIColor *)datePickerView:(RSDFDatePickerView *)view markColorForDate:(NSDate *)date;
 
 @end
 

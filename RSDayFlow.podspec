@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.platform      = :ios, '7.0'
   s.module_map    = 'RSDayFlow/module.modulemap'
   s.source_files  = 'RSDayFlow/*.{h,m}'
+  s.resources     = 'RSDayFlow/*.xib'
   s.frameworks    = 'QuartzCore', 'UIKit'
   s.requires_arc  = true
 end

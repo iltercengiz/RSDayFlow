@@ -47,7 +47,7 @@ typedef NS_ENUM (NSUInteger, RSDFMonthsDisplayStyle) {
 /**
  The label showing the view's date.
  */
-@property (nonatomic, readonly, strong) UILabel *dateLabel;
+@property (weak, nonatomic, readonly) IBOutlet UILabel *dateLabel;
 
 ///----------------------------------------
 /// @name Accessing Attributes of the Month
@@ -73,13 +73,6 @@ typedef NS_ENUM (NSUInteger, RSDFMonthsDisplayStyle) {
  @discussion Can be overridden in subclasses for customization.
  */
 - (UIColor *)selfBackgroundColor;
-
-/**
- Insets around month label. Default value is `UIEdgeInsetsZero`.
- 
- @discussion Can be overridden in subclasses for customization.
- */
-- (UIEdgeInsets)selfEdgeInsets;
 
 ///--------------------
 /// @name Display Style

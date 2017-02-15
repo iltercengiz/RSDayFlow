@@ -101,21 +101,20 @@
     NSUInteger numberOfItemsInTheSameRow = 7;
     CGFloat totalInteritemSpacing = [self minimumInteritemSpacing] * (numberOfItemsInTheSameRow - 1);
     
-    CGFloat selfItemWidth = (CGRectGetWidth(self.collectionView.frame) - totalInteritemSpacing) / numberOfItemsInTheSameRow;
-    selfItemWidth = floor(selfItemWidth * 1000) / 1000;
-    CGFloat selfItemHeight = 70.0f;
+    CGFloat selfItemWidth = floor((CGRectGetWidth(self.collectionView.frame) - totalInteritemSpacing) / numberOfItemsInTheSameRow);
+    CGFloat selfItemHeight = selfItemWidth;
     
     return (CGSize){ selfItemWidth, selfItemHeight };
 }
 
 - (CGFloat)selfMinimumLineSpacing
 {
-    return 2.0f;
+    return 0.0f;
 }
 
 - (CGFloat)selfMinimumInteritemSpacing
 {
-    return 2.0f;
+    return 0.0f;
 }
 
 @end

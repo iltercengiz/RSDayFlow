@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The label showing the cell's date.
  */
-@property (nonatomic, readonly, strong) UILabel *dateLabel;
+@property (weak, readonly, nonatomic) IBOutlet UILabel *dateLabel;
 
 ///--------------------------------------
 /// @name Accessing Attributes of the Day
@@ -103,12 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion Will be used to create the mark image if `markImage` is equal to `nil`.
  */
-@property (nonatomic, copy) UIColor *markImageColor;
-
-/**
- The mark image for the cell of the day. The default mark image is a small round mark.
- */
-@property (nonatomic, strong, nullable) UIImage *markImage;
+@property (nonatomic, copy) UIColor *markColor;
 
 ///---------------------------------------
 /// @name Accessing Attributes of the View
@@ -214,14 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion Can be overridden in subclasses for customization. Ignored if `customSelectedTodayImage` is not equal to `nil`.
  */
-- (UIColor *)selectedTodayImageColor;
-
-/**
- The custom background image for the cell of the current day. Default value is `nil`.
- 
- @discussion Can be overridden in subclasses for customization.
- */
-- (nullable UIImage *)customSelectedTodayImage;
+- (UIColor *)selectedTodayColor;
 
 /**
  The font for the label of the day when it is selected. Default value is [UIFont fontWithName:@"HelveticaNeue-Bold" size:19.0f].
@@ -229,6 +217,16 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion Can be overridden in subclasses for customization.
  */
 - (UIFont *)selectedDayLabelFont;
+
+/**
+ DESCRIPTION_REQUIRED
+ */
+- (UIFont *)inRangeDayLabelFont;
+
+/**
+ DESCRIPTION_REQUIRED
+ */
+- (UIColor *)inRangeDayLabelTextColor;
 
 /**
  The text color for the label of the day when it is selected. Default value is [UIColor whiteColor].
@@ -242,49 +240,19 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion Can be overridden in subclasses for customization. Ignored if `customSelectedDayImage` is not equal to `nil`.
  */
-- (UIColor *)selectedDayImageColor;
+- (UIColor *)selectedDayColor;
 
 /**
- The custom background image for the cell of the day when it is selected. Default value is `nil`.
- 
- @discussion Can be overridden in subclasses for customization.
+ DESCRIPTION_REQUIRED
  */
-- (nullable UIImage *)customSelectedDayImage;
+- (UIColor *)inRangeDayColor;
 
 /**
  The color of the overlay image for the cell of the day. Default value is [UIColor colorWithRed:184/255.0f green:184/255.0f blue:184/255.0f alpha:1.0f].
  
  @discussion Can be overridden in subclasses for customization. Ignored if `customOverlayImage` is not equal to `nil`.
  */
-- (UIColor *)overlayImageColor;
-
-/**
- The custom overlay image for the cell of the current day. Default value is `nil`.
- 
- @discussion Can be overridden in subclasses for customization.
- */
-- (nullable UIImage *)customOverlayImage;
-
-/**
- The color of the divider image for the cell of the day. Default value is [UIColor colorWithRed:200/255.0f green:200/255.0f blue:200/255.0f alpha:1.0f].
- 
- @discussion Can be overridden in subclasses for customization. Ignored if `customDividerImage` is not equal to `nil`.
- */
-- (UIColor *)dividerImageColor;
-
-/**
- The custom divider image for the cell of the day. Default value is `nil`.
- 
- @discussion Can be overridden in subclasses for customization.
- */
-- (nullable UIImage *)customDividerImage;
-
-/**
- Default selection bubble rectangle.
- 
- @discussion Can be overridden in subclasses for customization.
- */
-- (CGRect)selectedImageViewFrame;
+- (UIColor *)overlayColor;
 
 @end
 
